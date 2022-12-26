@@ -307,7 +307,7 @@ const getCardId = (value) => {
     'Q♠',
     'K♠',
   ];
-  return cardDeck.indexOf(value);
+  return cards.indexOf(value);
 };
 
 module.exports = {
