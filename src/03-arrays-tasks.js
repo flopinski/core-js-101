@@ -481,8 +481,15 @@ const distinct = (arr) => Array.from(new Set(arr));
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  return array.reduce((acc, item) => {
+    if (acc.get(keySelector(item))) {
+      acc.get(keySelector(item)).push(valueSelector(item));
+      return acc;
+    }
+    return acc.set(keySelector(item), [valueSelector(item)]);
+  },
+  new Map());
 }
 
 /**
@@ -512,9 +519,7 @@ const selectMany = (arr, childrenSelector) => Array.from(arr, childrenSelector).
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
-}
+const getElementByIndexes = (arr, indexes) => arr.flat(Infinity)[indexes[indexes.length - 1]];
 
 /**
  * Swaps the head and tail of the specified array:
@@ -534,8 +539,16 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const middle = Math.floor(arr.length / 2);
+  const head = arr.slice(0, middle);
+  const res = [];
+  if (arr.length % 2 === 1) {
+    res.push(arr.slice(middle + 1, arr.length), arr[middle], head);
+  } else {
+    res.push(arr.slice(middle, arr.length), head);
+  }
+  return res.flat();
 }
 
 module.exports = {
